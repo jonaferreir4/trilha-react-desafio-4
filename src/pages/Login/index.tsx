@@ -1,32 +1,35 @@
-import { useForm } from "react-hook-form";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import { Container, LoginContainer, Column, Spacing, Title } from "./styles";
-import { defaultValues, IFormLogin } from "./types";
+import { IFormLogin, defaultValues } from './types'
+import { useEffect, useState } from "react";
 
 const schema = yup
   .object({
-    email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
-    password: yup
-      .string()
-      .min(6, "No minimo 6 caracteres")
-      .required("Campo obrigatório"),
+    email: yup.string().email('Email inválido').required('Campo obrigatório'),
+    password: yup.string().min(6, 'No mínimo 6 caracteres').required('Campo obrigatório')
   })
-  .required();
+  .required()
 
 const Login = () => {
   const {
     control,
-    formState: { errors, isValid },
+    formState: {errors, isValid}
+
   } = useForm<IFormLogin>({
     resolver: yupResolver(schema),
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues,
-    reValidateMode: "onChange",
-  });
+    reValidateMode: 'onChange'
+  })
+  const [buttonDisable, setbuttonDisable] = useState(true)
+
+  useEffect(() =>{
+      setbuttonDisable(!isValid)
+  }, [isValid])
 
   return (
     <Container>
@@ -34,22 +37,11 @@ const Login = () => {
         <Column>
           <Title>Login</Title>
           <Spacing />
-          <Input
-            name="email"
-            placeholder="Email"
-            control={control}
-            errorMessage={errors?.email?.message}
-          />
+          <Input name="email" placeholder="Email" control={control} errorMessage={errors?.email?.message}/>
           <Spacing />
-          <Input
-            name="password"
-            type="password"
-            placeholder="Senha"
-            control={control}
-            errorMessage={errors?.password?.message}
-          />
+          <Input  name="password" placeholder="Senha" control={control} errorMessage={errors?.password?.message}/>
           <Spacing />
-          <Button title="Entrar" />
+          <Button title="Entrar" disable={buttonDisable} />
         </Column>
       </LoginContainer>
     </Container>

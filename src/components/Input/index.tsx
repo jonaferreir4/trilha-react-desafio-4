@@ -9,18 +9,14 @@ const Input = ({ control, name, errorMessage, ...rest }: IInputProps) => {
         <Controller
           control={control}
           name={name}
-          render={({ field: { onChange, onBlur, value, ref } }) => (
-            <input
-              {...rest}
-              onChange={onChange}
-              onBlur={onBlur}
-              value={value}
-              ref={ref}
-            />
-          )}
+          render={({ field: { onChange, onBlur, value, ref } }) => <input {...rest}
+          onChange={onChange}
+          onBlur={onBlur}
+          value={value}
+          ref={ref}/>}
         />
       </InputContainer>
-      {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
+      {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage>: null}
     </>
   );
 };
